@@ -1,0 +1,16 @@
+最初的非多线程preprocess.back.r
+多线程preprocess_utilis.r
+从多线程到单线程preprocess_utilis.new.r
+
+
+1.首先使用splitQurSeurat.r拆分qur数据集，生成test文件
+vim splitQurSeurat.r 
+修改最后一行splitSeurat("./new_homo.RDS","test",20000)
+splitSeurat(qur的RDS文件,想要生成的拆分数据集的文件名字,拆分的细胞数目)
+2.cd test
+修改test.sh中的Rscript ../preprocess_utilis.final.r $i ./downsample.rds subclass_label CellType
+Rscript ../preprocess_utilis.final.r $i test上级目录中的ref的RDS文件(RDS文件一定要在test的上级) ref细胞类型 qur细胞类型
+修改qsub投递任务命令
+qsub -cwd -l vf=100g,num_proc=4 -q st.q -P P20Z10200N0059 -binding linear:4 $nfilename 这个是我的qsub
+3.生成input文件夹后，直接运行train.sh
+
